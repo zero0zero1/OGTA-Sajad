@@ -1,8 +1,11 @@
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv";
+const SHEET_URLS = [
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv"
+];
 
-async function fetchFaultData() {
+async function fetchFaultData(url) {
   try {
-    const response = await fetch(SHEET_URL);
+    const response = await fetch(url);
     const csvText = await response.text();
     return csvToJson(csvText);
   } catch (error) {
@@ -30,9 +33,20 @@ function csvToJson(csvText) {
 }
 
 async function displayFaultData() {
-  const faults = await fetchFaultData();
   const tableBody = document.getElementById("faultTableBody");
-  tableBody.innerHTML = faults.map(f => `
+  let allFaults = [];
+
+  for (const url of SHEET_URLS) {
+    const faults = await fetchFaultData(url);
+    allFaults = allFaults.concat(faults);
+  }
+
+  if (allFaults.length === 0) {
+    tableBody.innerHTML = "<tr><td colspan='4'>No fault data available.</td></tr>";
+    return;
+  }
+
+  tableBody.innerHTML = allFaults.map(f => `
     <tr>
       <td>${f["Fault Type"]}</td>
       <td>${f["Possible Cause"]}</td>
