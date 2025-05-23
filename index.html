@@ -1,91 +1,132 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <title>OCTA - GRAM</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OCTA - GRAM | تشخيص أعطال الشبكة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="https://html5up.net/dimension/assets/css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
-    body { direction: rtl; font-family: 'Cairo', sans-serif; text-align: center; }
-    h1 { font-size: 2.5em; margin-top: 1em; }
-    .buttons { margin: 1em 0; }
-    button { padding: 10px 20px; margin: 0 10px; border: none; background-color: #0077cc; color: white; border-radius: 5px; cursor: pointer; }
-    button:hover { background-color: #005fa3; }
-    table { width: 100%; margin-top: 1em; border-collapse: collapse; }
-    th, td { padding: 10px; border: 1px solid #ccc; }
-    th { background-color: #0077cc; color: white; }
-    td { background-color: #f7f7f7; }
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #e0f7fa, #f0f4c3);
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    header {
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      color: #006064;
+      margin: 0;
+    }
+    .buttons {
+      margin-bottom: 20px;
+    }
+    .buttons button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #0097a7;
+      color: white;
+      transition: background 0.3s;
+    }
+    .buttons button:hover {
+      background-color: #00796b;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: auto;
+      max-width: 1000px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 1rem;
+    }
+    th {
+      background-color: #006064;
+      color: white;
+    }
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 0.9rem;
+        padding: 8px 5px;
+      }
+    }
   </style>
 </head>
-<body class="is-preload">
-  <div id="wrapper">
-    <header id="header">
-      <div class="logo"><i class="fas fa-bolt"></i></div>
-      <div class="content">
-        <div class="inner">
-          <h1>Eng - Sajad Kadhim</h1>
-          <p>تشخيص الأعطال الذكي في الشبكات الضوئية - OCTA GRAM</p>
-        </div>
-      </div>
-      <nav>
-        <ul>
-          <li><button onclick="loadSheet(0)">الورقة 1</button></li>
-          <li><button onclick="loadSheet(1)">الورقة 2</button></li>
-          <li><button onclick="loadSheet(2)">الورقة 3</button></li>
-        </ul>
-      </nav>
-    </header>
-
-    <div id="main">
-      <article id="data">
-        <h2>بيانات الأعطال</h2>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>نوع العطل</th>
-                <th>السبب المحتمل</th>
-                <th>خطوات الفحص</th>
-                <th>الحل النهائي</th>
-              </tr>
-            </thead>
-            <tbody id="faultTableBody">
-              <tr><td colspan="4">جاري التحميل...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
-    </div>
-
-    <footer id="footer">
-      <p>&copy; 2025 OCTA - GRAM. تصميم بواسطة Eng. Sajad Kadhim</p>
-    </footer>
+<body>
+  <header class="animate__animated animate__fadeInDown">
+    <h1>Eng - Sajad Kadhim</h1>
+    <h2 style="font-weight: normal; margin-top: 10px;">OCTA - GRAM</h2>
+  </header>
+  <div class="buttons animate__animated animate__fadeInUp animate__delay-1s">
+    <button onclick="loadSheet(0)">الورقة 1</button>
+    <button onclick="loadSheet(1)">الورقة 2</button>
+    <button onclick="loadSheet(2)">الورقة 3</button>
+  </div>
+  <div class="animate__animated animate__fadeInUp animate__delay-2s">
+    <table>
+      <thead>
+        <tr>
+          <th>نوع العطل</th>
+          <th>السبب المحتمل</th>
+          <th>خطوات الفحص</th>
+          <th>الحل النهائي</th>
+        </tr>
+      </thead>
+      <tbody id="faultTableBody">
+        <tr><td colspan="4">جاري التحميل...</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <script>
-    const SHEETS = [
-      'https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?gid=0&single=true&output=csv',
-      'https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?gid=727241597&single=true&output=csv',
-      'https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?gid=1162139631&single=true&output=csv'
-    ];
+    const SHEET_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv&gid=";
+    const GIDS = ["0", "2119942380", "1002974714"];
+
+    function csvToJson(csv) {
+      const lines = csv.trim().split("\n");
+      const headers = lines[0].split(",");
+      return lines.slice(1).map(line => {
+        const data = line.split(",");
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = data[i]);
+        return obj;
+      });
+    }
 
     async function loadSheet(index) {
-      const url = SHEETS[index];
-      const response = await fetch(url);
-      const text = await response.text();
-      const lines = text.trim().split("\n");
-      const data = lines.slice(1).map(line => line.split(','));
+      const url = SHEET_BASE + GIDS[index];
+      const res = await fetch(url);
+      const text = await res.text();
+      const data = csvToJson(text);
+      const body = document.getElementById("faultTableBody");
 
-      const tbody = document.getElementById('faultTableBody');
-      tbody.innerHTML = data.map(row => `
+      body.innerHTML = data.map(row => `
         <tr>
-          <td>${row[0]}</td>
-          <td>${row[1]}</td>
-          <td>${row[2]}</td>
-          <td>${row[3]}</td>
+          <td>${row["Fault Type"] || ""}</td>
+          <td>${row["Possible Cause"] || ""}</td>
+          <td>${row["Troubleshooting Steps"] || ""}</td>
+          <td>${row["Final Solution"] || ""}</td>
         </tr>
-      `).join('');
+      `).join("");
     }
 
     window.onload = () => loadSheet(0);
