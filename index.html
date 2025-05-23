@@ -1,69 +1,237 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OCTA - GRAM | Fault Diagnosis</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OCTA - GRAM | تشخيص الأعطال</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      color: #2c3e50;
+      margin: 0; padding: 20px;
+      direction: rtl;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: bold;
+      letter-spacing: 3px;
+      color: #34495e;
+      text-shadow: 1px 1px 3px #aab7c4;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .btn-container {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    button {
+      background-color: #3498db;
+      border: none;
+      color: white;
+      padding: 12px 22px;
+      margin: 0 10px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(52, 152, 219, 0.4);
+    }
+    button:hover {
+      background-color: #2980b9;
+      box-shadow: 0 6px 8px rgba(41, 128, 185, 0.6);
+    }
+    ul.fault-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #d1d9e6;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    }
+    li.fault-item {
+      background: #f7fbff;
+      border-bottom: 1px solid #d1d9e6;
+      cursor: pointer;
+      padding: 14px 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: background-color 0.25s ease;
+      position: relative;
+    }
+    li.fault-item:last-child {
+      border-bottom: none;
+    }
+    li.fault-item:hover {
+      background-color: #e1ecf9;
+    }
+    li.fault-item:after {
+      content: "▼";
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      color: #3498db;
+      transition: transform 0.3s ease;
+    }
+    li.fault-item.open:after {
+      transform: translateY(-50%) rotate(180deg);
+    }
+    div.fault-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 20px;
+      background: #fefefe;
+      border-top: 1px solid #d1d9e6;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    div.fault-details.open {
+      max-height: 350px;
+      padding: 12px 20px 20px 20px;
+    }
+    table.fault-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      text-align: center;
+      direction: rtl;
+    }
+    table.fault-table th,
+    table.fault-table td {
+      border: 1px solid #d1d9e6;
+      padding: 10px 14px;
+    }
+    table.fault-table th {
+      background-color: #3498db;
+      color: white;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>OCTA - GRAM</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Diagnose</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section class="intro">
-      <h2>Welcome to OCTA - GRAM</h2>
-      <p>Smart Fault Diagnosis for Optical Networks</p>
-    </section>
+<header>
+  <h1>Eng - Sajad Kadhim</h1>
+</header>
 
-    <section class="table-container">
-      <h3>Sheet 1 Faults</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Fault Type</th>
-            <th>Possible Cause</th>
-            <th>Troubleshooting Steps</th>
-            <th>Final Solution</th>
-          </tr>
-        </thead>
-        <tbody id="faultTableBody1">
-          <tr><td colspan="4">Loading...</td></tr>
-        </tbody>
-      </table>
-    </section>
+<main>
+  <div class="btn-container">
+    <button id="btnSheet1">عرض ورقة 1</button>
+    <button id="btnSheet2">عرض ورقة 2</button>
+  </div>
+  <ul class="fault-list" id="faultList">
+    <li>جاري تحميل البيانات...</li>
+  </ul>
+</main>
 
-    <section class="table-container">
-      <h3>Sheet 2 Faults</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Fault Type</th>
-            <th>Possible Cause</th>
-            <th>Troubleshooting Steps</th>
-            <th>Final Solution</th>
-          </tr>
-        </thead>
-        <tbody id="faultTableBody2">
-          <tr><td colspan="4">Loading...</td></tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
+<script>
+  const sheetUrls = {
+    sheet1: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
+    sheet2: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?gid=0&single=true&output=csv"
+  };
 
-  <footer>
-    <p>© 2025 OCTA - GRAM. All rights reserved.</p>
-  </footer>
+  const faultList = document.getElementById('faultList');
+  const btnSheet1 = document.getElementById('btnSheet1');
+  const btnSheet2 = document.getElementById('btnSheet2');
 
-  <script src="app.js"></script>
+  async function fetchCsvData(url) {
+    try {
+      const response = await fetch(url);
+      const text = await response.text();
+      return csvToJson(text);
+    } catch (error) {
+      alert("حدث خطأ في تحميل البيانات، تحقق من إعدادات Google Sheets.");
+      return [];
+    }
+  }
+
+  function csvToJson(csvText) {
+    const lines = csvText.trim().split("\n");
+    const headers = lines[0].split(",");
+    // نعيد ترتيب عناوين الأعمدة بالعربية حسب المطلوب
+    headers[0] = "نوع العطل";
+    headers[1] = "السبب المحتمل";
+    headers[2] = "خطوات الفحص";
+    headers[3] = "الحل النهائي";
+
+    return lines.slice(1).map(line => {
+      const values = line.split(",");
+      const obj = {};
+      headers.forEach((header, i) => obj[header] = values[i]);
+      return obj;
+    });
+  }
+
+  function renderFaults(faults) {
+    if (!faults.length) {
+      faultList.innerHTML = "<li>لا توجد بيانات لعرضها.</li>";
+      return;
+    }
+    faultList.innerHTML = "";
+    faults.forEach((fault, i) => {
+      const li = document.createElement('li');
+      li.className = "fault-item";
+      li.textContent = fault["نوع العطل"];
+
+      const details = document.createElement('div');
+      details.className = "fault-details";
+      details.innerHTML = `
+        <table class="fault-table">
+          <thead>
+            <tr>
+              <th>نوع العطل</th>
+              <th>السبب المحتمل</th>
+              <th>خطوات الفحص</th>
+              <th>الحل النهائي</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${fault["نوع العطل"]}</td>
+              <td>${fault["السبب المحتمل"]}</td>
+              <td>${fault["خطوات الفحص"]}</td>
+              <td>${fault["الحل النهائي"]}</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      li.appendChild(details);
+
+      li.addEventListener('click', () => {
+        li.classList.toggle('open');
+        details.classList.toggle('open');
+      });
+
+      faultList.appendChild(li);
+    });
+  }
+
+  async function loadSheet(sheetKey) {
+    faultList.innerHTML = "<li>جارٍ تحميل البيانات...</li>";
+    const data = await fetchCsvData(sheetUrls[sheetKey]);
+    renderFaults(data);
+  }
+
+  btnSheet1.addEventListener('click', () => loadSheet('sheet1'));
+  btnSheet2.addEventListener('click', () => loadSheet('sheet2'));
+
+  // تحميل ورقة 1 افتراضياً عند فتح الصفحة
+  window.onload = () => loadSheet('sheet1');
+</script>
+
 </body>
 </html>
