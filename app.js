@@ -1,59 +1,58 @@
-const SHEET_URLS = [
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv"
-];
+const sheetLinks = {
+  technical: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
+  ont: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLzwW5RjsdOqTKM8Iy28GT3xfrbFQyH_pHadurzijKyJD8LAN6OsFf7m_pi1gr_PCegcQTALsWw_rT/pub?output=csv",
+  dc: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQPiO867GG99zr8U6dvZpNqy8kPJKvuLXY66EczQsFoWPNudIhVfNNLLKK5xXtZfD3UaW6MXnEBCsBR/pub?output=csv"
+};
 
-async function fetchFaultData(url) {
-  try {
-    const response = await fetch(url);
-    const csvText = await response.text();
-    return csvToJson(csvText);
-  } catch (error) {
-    console.error("Error loading fault data:", error);
-    alert("Error loading fault data, please check your Google Sheets settings.");
-    return [];
-  }
+let allData = [];
+
+async function fetchCSV(sheetKey) {
+  const response = await fetch(sheetLinks[sheetKey]);
+  const text = await response.text();
+  return csvToJson(text);
 }
 
 function csvToJson(csvText) {
   const lines = csvText.trim().split("\n");
   const headers = lines[0].split(",");
-
-  headers[0] = "Fault Type";
-  headers[1] = "Possible Cause";
-  headers[2] = "Troubleshooting Steps";
-  headers[3] = "Final Solution";
-
   return lines.slice(1).map(line => {
     const values = line.split(",");
-    const obj = {};
-    headers.forEach((header, i) => obj[header] = values[i]);
-    return obj;
+    return {
+      fault: values[0],
+      cause: values[1],
+      steps: values[2],
+      solution: values[3],
+    };
   });
 }
 
-async function displayFaultData() {
-  const tableBody = document.getElementById("faultTableBody");
-  let allFaults = [];
-
-  for (const url of SHEET_URLS) {
-    const faults = await fetchFaultData(url);
-    allFaults = allFaults.concat(faults);
-  }
-
-  if (allFaults.length === 0) {
-    tableBody.innerHTML = "<tr><td colspan='4'>No fault data available.</td></tr>";
-    return;
-  }
-
-  tableBody.innerHTML = allFaults.map(f => `
+function renderTable(data) {
+  const tbody = document.getElementById("faultTableBody");
+  tbody.innerHTML = data.map(row => `
     <tr>
-      <td>${f["Fault Type"]}</td>
-      <td>${f["Possible Cause"]}</td>
-      <td>${f["Troubleshooting Steps"]}</td>
-      <td>${f["Final Solution"]}</td>
+      <td>${row.fault}</td>
+      <td>${row.cause}</td>
+      <td>${row.steps}</td>
+      <td>${row.solution}</td>
     </tr>
   `).join("");
 }
 
-window.onload = displayFaultData;
+async function updateSheetView(sheetKey) {
+  allData = await fetchCSV(sheetKey);
+  renderTable(allData);
+}
+
+document.getElementById("sheetSelector").addEventListener("change", (e) => {
+  updateSheetView(e.target.value);
+});
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  const term = e.target.value.toLowerCase();
+  const filtered = allData.filter(row =>
+    Object.values(row).some(val => val.toLowerCase().includes(term))
+  );
+  renderTable(filtered);
+});
+
+updateSheetView("technical");
