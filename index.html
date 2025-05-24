@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OCTA - GRAM | تشخيص أعطال الشبكة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCTA - GRAM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -14,122 +12,169 @@
     }
     body {
       margin: 0;
-      background: linear-gradient(135deg, #e0f7fa, #f0f4c3);
+      background: linear-gradient(135deg, #f0f4f8, #dfe9f3);
       color: #333;
-      text-align: center;
-      padding: 20px;
     }
     header {
-      margin-bottom: 20px;
+      background-color: #2e3a59;
+      color: white;
+      padding: 20px;
+      text-align: center;
     }
     header h1 {
-      font-size: 2.5rem;
-      color: #006064;
       margin: 0;
+      font-size: 2rem;
     }
-    .buttons {
-      margin-bottom: 20px;
+    nav {
+      text-align: center;
+      margin-top: 10px;
     }
-    .buttons button {
-      padding: 10px 20px;
-      margin: 0 5px;
+    nav select {
+      padding: 10px;
       font-size: 1rem;
-      border: none;
       border-radius: 5px;
-      cursor: pointer;
-      background-color: #0097a7;
-      color: white;
-      transition: background 0.3s;
+      border: 1px solid #ccc;
     }
-    .buttons button:hover {
-      background-color: #00796b;
+    .search-container {
+      text-align: center;
+      margin: 20px;
+    }
+    .search-container input {
+      padding: 10px;
+      width: 80%;
+      max-width: 500px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
     table {
-      width: 100%;
+      width: 95%;
+      margin: 20px auto;
       border-collapse: collapse;
-      margin: auto;
-      max-width: 1000px;
       background-color: white;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     th, td {
-      padding: 12px 10px;
-      border-bottom: 1px solid #ddd;
-      font-size: 1rem;
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
     }
     th {
-      background-color: #006064;
+      background-color: #4a6fa5;
       color: white;
     }
-    @media (max-width: 600px) {
-      th, td {
-        font-size: 0.9rem;
-        padding: 8px 5px;
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #2e3a59;
+      color: white;
+      margin-top: 30px;
+    }
+    @media screen and (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        font-size: 0.8rem;
       }
     }
   </style>
 </head>
 <body>
-  <header class="animate__animated animate__fadeInDown">
+  <header>
     <h1>Eng - Sajad Kadhim</h1>
-    <h2 style="font-weight: normal; margin-top: 10px;">OCTA - GRAM</h2>
+    <nav>
+      <label for="sheetSelector">اختر القسم:</label>
+      <select id="sheetSelector">
+        <option value="technical">الدعم الفني</option>
+        <option value="ont">جهاز ONU</option>
+        <option value="datacenter">مركز البيانات</option>
+      </select>
+    </nav>
   </header>
-  <div class="buttons animate__animated animate__fadeInUp animate__delay-1s">
-    <button onclick="loadSheet(0)">الورقة 1</button>
-    <button onclick="loadSheet(1)">الورقة 2</button>
-    <button onclick="loadSheet(2)">الورقة 3</button>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="ابحث عن نوع العطل أو السبب...">
   </div>
-  <div class="animate__animated animate__fadeInUp animate__delay-2s">
-    <table>
-      <thead>
-        <tr>
-          <th>نوع العطل</th>
-          <th>السبب المحتمل</th>
-          <th>خطوات الفحص</th>
-          <th>الحل النهائي</th>
-        </tr>
-      </thead>
-      <tbody id="faultTableBody">
-        <tr><td colspan="4">جاري التحميل...</td></tr>
-      </tbody>
-    </table>
-  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>نوع العطل</th>
+        <th>السبب المحتمل</th>
+        <th>خطوات الفحص</th>
+        <th>الحل النهائي</th>
+      </tr>
+    </thead>
+    <tbody id="faultTableBody">
+      <tr><td colspan="4">يتم التحميل...</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <p>© 2025 OCTA - GRAM. جميع الحقوق محفوظة.</p>
+  </footer>
 
   <script>
-    const SHEET_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv&gid=";
-    const GIDS = ["0", "2119942380", "1002974714"];
+    const SHEET_URLS = {
+      technical: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR39W1cXr92a99T_RDr5abulfG66yPTqXQ21703PuuArM8V83yzvu5i0DTRyMpfboDwFS-pJFh1275d/pub?output=csv",
+      ont: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLzwW5RjsdOqTKM8Iy28GT3xfrbFQyH_pHadurzijKyJD8LAN6OsFf7m_pi1gr_PCegcQTALsWw_rT/pub?output=csv",
+      datacenter: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQPiO867GG99zr8U6dvZpNqy8kPJKvuLXY66EczQsFoWPNudIhVfNNLLKK5xXtZfD3UaW6MXnEBCsBR/pub?output=csv"
+    };
+
+    const tableBody = document.getElementById("faultTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const sheetSelector = document.getElementById("sheetSelector");
+
+    async function fetchCSV(url) {
+      const res = await fetch(url);
+      return await res.text();
+    }
 
     function csvToJson(csv) {
-      const lines = csv.trim().split("\n");
-      const headers = lines[0].split(",");
-      return lines.slice(1).map(line => {
-        const data = line.split(",");
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = data[i]);
-        return obj;
-      });
+      const lines = csv.split("\n");
+      const result = [];
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(",");
+        if (values.length >= 4) {
+          result.push({
+            type: values[0],
+            cause: values[1],
+            steps: values[2],
+            solution: values[3]
+          });
+        }
+      }
+      return result;
     }
 
-    async function loadSheet(index) {
-      const url = SHEET_BASE + GIDS[index];
-      const res = await fetch(url);
-      const text = await res.text();
-      const data = csvToJson(text);
-      const body = document.getElementById("faultTableBody");
-
-      body.innerHTML = data.map(row => `
+    function renderTable(data) {
+      const search = searchInput.value.toLowerCase();
+      tableBody.innerHTML = data.filter(row =>
+        row.type.toLowerCase().includes(search) ||
+        row.cause.toLowerCase().includes(search) ||
+        row.steps.toLowerCase().includes(search) ||
+        row.solution.toLowerCase().includes(search)
+      ).map(row => `
         <tr>
-          <td>${row["Fault Type"] || ""}</td>
-          <td>${row["Possible Cause"] || ""}</td>
-          <td>${row["Troubleshooting Steps"] || ""}</td>
-          <td>${row["Final Solution"] || ""}</td>
+          <td>${row.type}</td>
+          <td>${row.cause}</td>
+          <td>${row.steps}</td>
+          <td>${row.solution}</td>
         </tr>
-      `).join("");
+      `).join("") || `<tr><td colspan="4">لا توجد نتائج</td></tr>`;
     }
 
-    window.onload = () => loadSheet(0);
+    async function loadSheet(sheetKey) {
+      const csv = await fetchCSV(SHEET_URLS[sheetKey]);
+      const data = csvToJson(csv);
+      renderTable(data);
+      searchInput.oninput = () => renderTable(data);
+    }
+
+    sheetSelector.onchange = () => loadSheet(sheetSelector.value);
+    loadSheet("technical");
   </script>
 </body>
 </html>
